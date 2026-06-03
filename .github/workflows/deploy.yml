@@ -10,7 +10,8 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -26,18 +27,28 @@ jobs:
       - name: Docker Login
         run: |
           echo "${{ secrets.DOCKER_TOKEN }}" | sudo docker login \
-          -u "${{ secrets.DOCKER_USERNAME }}" \
-          --password-stdin
+            -u "${{ secrets.DOCKER_USERNAME }}" \
+            --password-stdin
 
-      - name: Build Image
+      - name: Build Docker Images
         run: |
-          sudo docker build -t apbestpeers/express-automission:latest .
+          sudo docker build \
+            -t apbestpeers/express-automission:${{ github.run_number }} \
+            -t apbestpeers/express-automission:latest .
 
-      - name: Push Image
+      - name: Push Versioned Image
+        run: |
+          sudo docker push apbestpeers/express-automission:${{ github.run_number }}
+
+      - name: Push Latest Image
         run: |
           sudo docker push apbestpeers/express-automission:latest
 
-      - name: Deploy
+      - name: Deploy Latest Version
         run: |
           chmod +x ~/deploy/deploy.sh
-          ~/deploy/deploy.sh
+          ~/deploy/deploy.sh ${{ github.run_number }}
+
+      - name: Cleanup Old Images
+        run: |
+          sudo docker image prune -af || true
