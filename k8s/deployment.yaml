@@ -18,6 +18,6 @@ spec:
     spec:
       containers:
         - name: express-app
-          image: apbestpeers/express-automission:latest
+          image: apbestpeers/express-automission:4
           ports:
             - containerPort: 3000
