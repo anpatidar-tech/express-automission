@@ -43,12 +43,3 @@ jobs:
       - name: Push Latest Image
         run: |
           sudo docker push apbestpeers/express-automission:latest
-
-      - name: Deploy Latest Version
-        run: |
-          chmod +x ~/deploy/deploy.sh
-          ~/deploy/deploy.sh ${{ github.run_number }}
-
-      - name: Cleanup Old Images
-        run: |
-          sudo docker image prune -af || true
