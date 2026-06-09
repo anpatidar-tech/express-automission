@@ -6,6 +6,12 @@ app.get('/', (req, res) => {
   res.send('Hello World! deployment: 7 ');
 });
 
+app.get('/exit', (req, res) => {
+  res.send('Server is shutting down...');
+  process.exit(0);
+});
+
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
