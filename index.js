@@ -4,7 +4,7 @@ const port = 3000;
 
 app.get('/', (req, res) => {
   console.log('Received request at /');
-  res.send('Hello World! deployment: 4');
+  res.send('New deployment successful!');
 });
 
 app.get('/exit', (req, res) => {
